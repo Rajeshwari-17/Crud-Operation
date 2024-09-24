@@ -1,0 +1,55 @@
+{%extends 'base.html'%}
+{% block content%}
+<div class="row">
+    <div class="col-sm-4">
+        {% if messages %}
+        <div class="alert alert-success">
+            {% for i in messages%}
+                {{i}}
+            {% endfor%}
+        </div>
+        {% endif%}
+        <h4 class="text-center alert alert-info">Add New Student</h4>
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" class="btn btn-success" value="Add">
+        </form>
+    </div>
+    <div class="col-sm-7 offset-1">
+        <h4 class="text-center alert alert-info">Users List</h4>
+        {% if user %}
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Password</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for u in user%}
+              <tr>
+                <th scope="row">{{u.id}}</th>
+                <td>{{u.name}}</td>
+                <td>{{u.email}}</td>
+                <td>{{u.password}}</td>
+                <td>
+                    <a href="{% url 'updatedata' u.id %}" class="btn btn-warning">Edit</a>
+                    <form action="{% url 'deleted' u.id %}" method="POST" class="d-inline">
+                        {% csrf_token %}
+                        <input type="submit" class="btn btn-danger" value="Delete">
+                </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% else %}
+          <h4 class="text-center alert alert-warning">No Data</h4>
+          {% endif %}
+
+    </div>
+</div>
+{%endblock content%}
